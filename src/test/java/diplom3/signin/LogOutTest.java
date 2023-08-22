@@ -1,5 +1,5 @@
-package signIn;
-
+package diplom3.signin;
+import diplom3.Browsers;
 import diplom3.pageObject.MainPage;
 import diplom3.pageObject.PersonalAccountPage;
 import diplom3.user.CreateAndLoginUser;
@@ -14,41 +14,22 @@ import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-
-
 import java.util.Objects;
-
 import static org.hamcrest.CoreMatchers.is;
-
 public class LogOutTest {
-
     private WebDriver driver;
     private CreateUser createUser;
-    private LoginUser loginUser;
     private String accessToken;
     private CreateAndLoginUser createAndLoginUser = new CreateAndLoginUser();
-
+    private Browsers browsers = new Browsers();
     @Before
     @Step("Тестовые данные")
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        driver = new ChromeDriver(options);
-
-        //Драйвер Yandex
-           /*System.setProperty("webdriver.chrome.driver","path/to/yandex/browser");
-            ChromeDriverService service = new ChromeDriverService.Builder().build();
-            this.driver = new ChromeDriver(service); */
-
-        driver.manage().window().maximize();
-        driver.get("https://stellarburgers.nomoreparties.site");
+        driver = browsers.get();
     }
-
     @Test
     @Step("выход по кнопке «Выйти» в личном кабинете")
     @Description("Тест проверяет выход по кнопке «Выйти» в личном кабинете")

@@ -1,5 +1,5 @@
-package registration;
-
+package diplom3.registration;
+import diplom3.Browsers;
 import diplom3.pageObject.RegistrationPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Description;
@@ -13,44 +13,25 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import org.openqa.selenium.chrome.ChromeDriverService;
-
 import org.openqa.selenium.chrome.ChromeOptions;
-
-
 import static org.hamcrest.CoreMatchers.is;
-
 @RunWith(Parameterized.class)
 public class ErrorPasswordTest {
     private WebDriver driver;
-
+    private Browsers browsers = new Browsers();
     @Before
     public void setUp() {
-
-        //Драйвер Chrome
-        WebDriverManager.chromedriver().setup(); //для запуска в браузере Google Chrome
-        ChromeOptions options = new ChromeOptions();
-        driver = new ChromeDriver(options);
-
-        //Драйвер Yandex
-        /*System.setProperty("webdriver.chrome.driver","path/to/yandex/browser");
-          ChromeDriverService service = new ChromeDriverService.Builder().build();
-          this.driver = new ChromeDriver(service);*/
-        driver.manage().window().maximize();
-        driver.get("https://stellarburgers.nomoreparties.site/register");
+        driver = browsers.get();
     }
-
     private final String name;
     private final String email;
     private final String password;
-
     public ErrorPasswordTest(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
     }
-
     @Parameterized.Parameters
     public static Object[][] dataForErrorPassword() {
         return new Object[][]{
@@ -66,6 +47,7 @@ public class ErrorPasswordTest {
     @Description("Тест проверяет, что нельзя зарегистрироваться, если пароль < 6 символов")
     @DisplayName("Невозможна регистрация пользователя с некорректным паролем")
     public void PasswordFailedTest() {
+        driver.get("https://stellarburgers.nomoreparties.site/register");
         RegistrationPage registrationPage = new RegistrationPage(driver);
         registrationPage.registerNewUser(name, email, password);
         String result = registrationPage.findTextIncorrectPassword();

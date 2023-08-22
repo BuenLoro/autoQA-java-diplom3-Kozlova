@@ -1,21 +1,17 @@
 package diplom3.user;
-
 import diplom3.pageObject.RegistrationPage;
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-
 import static diplom3.constants.ApiPath.*;
 import static io.restassured.RestAssured.given;
-
 public class CreateAndLoginUser {
     public static RequestSpecification getRequest() {
         return given().log().all()
                 .contentType(ContentType.JSON)
                 .baseUri("https://stellarburgers.nomoreparties.site");
     }
-
     @Step("Создание пользователя для парамметризированного теста")
     public ValidatableResponse createNewUser(RegistrationPage registrationPage) {
         return getRequest()

@@ -1,5 +1,5 @@
-package profile;
-
+package diplom3.profile;
+import diplom3.Browsers;
 import diplom3.pageObject.MainPage;
 import diplom3.pageObject.PersonalAccountPage;
 import diplom3.user.CreateAndLoginUser;
@@ -17,18 +17,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-
-
 import java.util.Objects;
-
 import static org.hamcrest.CoreMatchers.is;
-
 public class EnterThePersonalAccount {
     private WebDriver driver;
     private CreateUser createUser;
     private String accessToken;
     private CreateAndLoginUser createAndLoginUser = new CreateAndLoginUser();
-
+    private Browsers browsers = new Browsers();
     @Before
     public void setUp() {
         createAndLoginUser = new CreateAndLoginUser();
@@ -37,21 +33,8 @@ public class EnterThePersonalAccount {
         accessToken = responseCreate.extract().jsonPath().get("accessToken");
         ValidatableResponse responseLogin = createAndLoginUser.loginUser(createUser);
         accessToken = responseLogin.extract().jsonPath().get("accessToken");
-
-
-        //Драйвер Chrome
-        WebDriverManager.chromedriver().setup(); //для запуска в браузере Google Chrome
-        ChromeOptions options = new ChromeOptions();
-        driver = new ChromeDriver(options);
-
-            //Драйвер Yandex
-            /*System.setProperty("webdriver.chrome.driver","path/to/yandex/browser");
-            ChromeDriverService service = new ChromeDriverService.Builder().build();
-            this.driver = new ChromeDriver(service);*/
-        driver.manage().window().maximize();
-        driver.get("https://stellarburgers.nomoreparties.site");
+        driver = browsers.get();
     }
-
     @Test
     @Step("переход по клику на «Личный кабинет»")
     @Description("Тест проверяет переход по клику на «Личный кабинет» залогиненого пользователя")

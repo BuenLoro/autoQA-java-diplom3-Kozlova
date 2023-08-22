@@ -1,5 +1,5 @@
-package registration;
-
+package diplom3.registration;
+import diplom3.Browsers;
 import diplom3.pageObject.RegistrationPage;
 import diplom3.user.CreateAndLoginUser;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -15,49 +15,27 @@ import org.junit.runners.Parameterized;
 import diplom3.user.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import org.openqa.selenium.chrome.ChromeOptions;
-
-
-
 import java.util.Objects;
-
 import static org.hamcrest.CoreMatchers.is;
-
 @RunWith(Parameterized.class)
 public class RegistrationPassedTest {
     private WebDriver driver;
     private String accessToken;
-
     private final CreateAndLoginUser createAndLoginUser = new CreateAndLoginUser();
-
+    private Browsers browsers = new Browsers();
     @Before
     public void setUp() {
-
-
-        //Драйвер Chrome
-        WebDriverManager.chromedriver().setup(); //для запуска в браузере Google Chrome
-        ChromeOptions options = new ChromeOptions();
-        driver = new ChromeDriver(options);
-
-            /*Драйвер Yandex
-            System.setProperty("webdriver.chrome.driver","path/to/yandex/browser");
-            ChromeDriverService service = new ChromeDriverService.Builder().build();
-            this.driver = new ChromeDriver(service);*/
-        driver.manage().window().maximize();
-        driver.get("https://stellarburgers.nomoreparties.site/register");
+        driver = browsers.get();
     }
-
     private final String name;
     private final String email;
     private final String password;
-
     public RegistrationPassedTest(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
     }
-
     @Parameterized.Parameters
     public static Object[][] dataForSuccessfulRegistration() {
         return new Object[][]{
@@ -68,18 +46,17 @@ public class RegistrationPassedTest {
                 {"Лия Мария", "1mck7ih7d9sjlam@gmail.com", "jdj ksjs9sjs"}
         };
     }
-
     @Test
     @Step("Регистрация пользователя")
     @Description("Тест проверяет успешную регистрацию пользователя")
     @DisplayName("Успешная регистрация пользователя")
     public void createNewUserPassedTest() {
+        driver.get("https://stellarburgers.nomoreparties.site/register");
         RegistrationPage registrationPage = new RegistrationPage(driver);
         registrationPage.registerNewUser(name, email, password);
         String result = registrationPage.findTextEnter();
         MatcherAssert.assertThat("Есть кнопка Войти", result, is("Войти"));
     }
-
     @After
     @Step("Удаление тестовых данных")
     public void deleteUser() {
